@@ -17,3 +17,14 @@ model FormData {
 
   @@map("form_data")
 }
+
+model Query {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  description String?
+  createdAt   String
+  updatedAt   String
+  status      String
+  formData    FormData @relation(fields: [formDataId], references: [id])
+  formDataId  String
+}
