@@ -42,7 +42,7 @@ export default function Home() {
             </tr>
             {formData.map((data, index)=>{
               return(
-                <tr key={data.id}>
+                <tr className={styles.tableRow} key={data.id}>
                   <td>{data.question}</td>
                   <td>{data.answer}</td>
                   <td></td>
