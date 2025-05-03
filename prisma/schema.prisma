@@ -14,7 +14,7 @@ model FormData {
   id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   question String
   answer   String
-  Query    Query[]
+  query    Query?
 
   @@map("form_data")
 }
@@ -27,7 +27,6 @@ model Query {
   updatedAt   String
   status      String
   formData    FormData @relation(fields: [formDataId], references: [id])
-  formDataId  String
-
+  formDataId  String   @unique @db.Uuid  // Make sure this has @db.Uuid
   @@map("query")
 }
