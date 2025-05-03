@@ -4,7 +4,7 @@
     width: 100vw;
     padding-inline: 3%;
     margin-block: 3%;
-    font-family: "Outfit", serif;;
+    font-family: "Outfit", serif;
 }
 
 .header{
@@ -30,9 +30,11 @@
 }
 
 .tableHead{
-    background-color: #DBDBDB;
+    color: #333333;
     height: 2em !important;
     text-align: left;
+    border-top: 1px solid #505050;
+    border-bottom: 1px solid #505050 !important;
 }
 
 .main tr{
@@ -63,4 +65,15 @@
 
 .tableRow:hover{
     background-color: #F5F5F5;
+}
+
+.open:hover{
+    background-color: #FFF0F0;
+}
+
+.resolved:hover{
+    background-color: #F0FFF0;
+}
+.center_td{
+    text-align: center;
 }

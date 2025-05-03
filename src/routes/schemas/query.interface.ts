@@ -10,10 +10,6 @@ export interface IQuery {
   formDataId: string;
 }
 
-export interface IQueryWithRelations extends IQuery {
-  formData: IFormData;
-}
-
 export interface CreateQuery{
   title: string;
   description: string;
