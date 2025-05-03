@@ -20,3 +20,9 @@ export interface CreateQuery{
   status: string;
   formDataId: string;
 }
+
+export interface UpdateQuery {
+  title?: string;
+  description?: string | null;
+  status?: string;
+}

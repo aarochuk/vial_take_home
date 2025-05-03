@@ -1,7 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import prisma from '../db/db_client';
 import { serializer } from './middleware/pre_serializer';
-import { CreateQuery } from './schemas/query.interface';
+import { CreateQuery, UpdateQuery } from './schemas/query.interface';
 import { ApiError } from '../errors';
 
 async function queryRoutes(app: FastifyInstance) {
@@ -39,7 +39,68 @@ async function queryRoutes(app: FastifyInstance) {
     },
   });
 
+  app.put<{
+    Params: { id: string };
+    Body: UpdateQuery;
+  }>('/:id', {
+    async handler(req, reply) {
+      log.debug('update query');
+      const { id } = req.params;
+      const { title, description, status } = req.body;
+      try {
+        const existingQuery = await prisma.query.findUnique({
+          where: { id }
+        });
+        if (!existingQuery) {
+          throw new ApiError('Query not found', 404);
+        }
+        const updatedQuery = await prisma.query.update({
+          where: { id },
+          data: {
+            title: title ?? existingQuery.title,
+            description: description !== undefined ? description : existingQuery.description,
+            status: status ?? existingQuery.status,
+            updatedAt: new Date().toISOString()
+          }
+        });
+        reply.status(200);
+      } catch (err: any) {
+        log.error({ err }, err.message);
+        if (err instanceof ApiError) {
+          throw err;
+        }
+        throw new ApiError('Failed to update query', 400);
+      }
+    },
+  });
 
+  app.delete<{
+    Params: { id: string };
+  }>('/:id', {
+    async handler(req, reply) {
+      log.debug('delete query');
+      const { id } = req.params;
+      try {
+        const existingQuery = await prisma.query.findUnique({
+          where: { id }
+        });
+        if (!existingQuery) {
+          throw new ApiError('Query not found', 404);
+        }
+        await prisma.query.delete({
+          where: { id }
+        });
+
+        reply.status(204);
+      } catch (err: any) {
+        log.error({ err }, err.message);
+        if (err instanceof ApiError) {
+          throw err;
+        }
+        throw new ApiError('Failed to delete query', 400);
+      }
+    },
+  });
 }
 
 export default queryRoutes;

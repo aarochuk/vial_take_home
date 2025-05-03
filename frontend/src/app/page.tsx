@@ -3,42 +3,81 @@ import Image from "next/image";
 import styles from "./page.module.css";
 import axios from "axios";
 import { useState, useEffect, SetStateAction } from "react";
-import { ActionIcon, Modal, TextInput, Button, Group  } from '@mantine/core';
+import { ActionIcon, Modal, TextInput, Button, Tooltip  } from '@mantine/core';
 import { FaPlus } from 'react-icons/fa';
 
 export default function Home() {
   const [formData, addFormData] = useState<any[]>([]);
   const [queryData, addQueryData] = useState([]);
   
-  const [modalOpened, setModalOpened] = useState(false);
-  const [modalId, setModalId] = useState<string>("");
-  const [modalQuestion, setModalQuestion] = useState<string>("");
+  const [addModal, setAddModal] = useState(false);
+  const [formIdAdd, setFormIdAdd] = useState<string>("");
+  const [formQuestionAdd, setFormQuestionAdd] = useState<string>("");
   const [queryDesc, setQueryDesc] = useState<string>("");
 
-  const handleOpenModal = (id: string, question: string) => {
-    setModalId(id);
-    setModalQuestion(question);
-    setModalOpened(true);
+  const [editModalOpened, setEditModalOpened] = useState(false);
+  const [selectedQuery, setSelectedQuery] = useState<any>(null);
+  const [editTitle, setEditTitle] = useState<string>("");
+  const [editDescription, setEditDescription] = useState<string>("");
+  const [editStatus, setEditStatus] = useState<string>("");
+  const [editId, setEditId] = useState<string>("");
+
+  const newStatusModal = (id: string, question: string) => {
+    setFormIdAdd(id);
+    setFormQuestionAdd(question);
+    setAddModal(true);
   };
 
-  const handleCloseModal = () => {
-    setModalOpened(false);
+  const closeAddModal = () => {
+    setAddModal(false);
     setQueryDesc("");
-    setModalQuestion("");
-    setModalId("");
+    setFormQuestionAdd("");
+    setFormIdAdd("");
   };
 
-  const handleSaveQuery = async () => {
+  const newQuery = async () => {
     try {
       const response = await axios.post("http://127.0.0.1:8080/query", {
-        title: modalQuestion, description: queryDesc, status: "open", formDataId: modalId
+        title: formQuestionAdd, description: queryDesc, status: "open", formDataId: formIdAdd
       });
       await populateTable();
     } catch (error) {
       console.log("Error Occured");
     }
-    handleCloseModal();
+    closeAddModal();
   };
+
+
+  const editStatusModal = (query: any) => {
+    setSelectedQuery(query);
+    setEditTitle(query.title);
+    setEditDescription(query.description || "");
+    setEditStatus(query.status);
+    setEditId(query.id);
+    setEditModalOpened(true);
+  };
+
+  const closeStatusModal = () => {
+    setEditModalOpened(false);
+    setSelectedQuery(null);
+    setEditTitle("");
+    setEditDescription("");
+    setEditId("");
+    setEditStatus("");
+  };
+
+  const editStatusFunc = async () => {
+    try {
+      const response = await axios.put(`http://127.0.0.1:8080/query/${editId}`, {
+        status: "resolved"
+      });
+      await populateTable();
+    } catch (error) {
+      console.log("Error Occured");
+    }
+    closeStatusModal();
+  };
+
 
   const populateTable = async () => {
     try {
@@ -78,20 +117,26 @@ export default function Home() {
                   <td>{data.question}</td>
                   <td>{data.answer}</td>
                   <td>{data.query ? (
-                    data.query.status
-                    ):(
-                      <ActionIcon variant="filled" color="blue" onClick={() => handleOpenModal(data.id, data.question)}>
-                        <FaPlus />
+                    <Tooltip label="View Query" position="top" withArrow>
+                      <ActionIcon variant="filled" color={data.query.status === "open"? "red" : "green"} onClick={() => editStatusModal(data.query)}>
+                        {data.query.status}
                       </ActionIcon>
+                    </Tooltip>
+                    ):(
+                      <Tooltip label="Add Query" position="top" withArrow>
+                        <ActionIcon variant="filled" color="blue" onClick={() => newStatusModal(data.id, data.question)}>
+                          <FaPlus />
+                        </ActionIcon>
+                      </Tooltip>
                     )}</td>
                 </tr>
               )
             })}
 
             <Modal
-              opened={modalOpened}
-              onClose={handleCloseModal}
-              title={`Create a Query | ${modalQuestion}`}
+              opened={addModal}
+              onClose={closeAddModal}
+              title={`Create a Query | ${formQuestionAdd}`}
               centered
             >
               <TextInput
@@ -100,9 +145,21 @@ export default function Home() {
                 onChange={(e) => setQueryDesc(e.target.value )}
                 mb="md"
               />
-              <Button onClick={handleSaveQuery}>
+              <Button onClick={newQuery}>
                 Create
               </Button>
+            </Modal>
+
+
+            <Modal
+              opened={editModalOpened}
+              onClose={closeStatusModal}
+              title={`Edit Query | ${selectedQuery?.title}`}
+              centered
+            >
+                <Button onClick={editStatusFunc}>
+                  Resolve
+                </Button>
             </Modal>
           </tbody>
         </table> 
