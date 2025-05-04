@@ -53,6 +53,16 @@ export default function Home() {
     setSelectedQuery(null);
   };
 
+  const deleteQuery = async () => {
+    try {
+      const response = await axios.delete(`http://127.0.0.1:8080/query/${selectedQuery.id}`);
+      await populateTable();
+    } catch (error) {
+      console.log("Error Occured");
+    }
+    closeStatusModal();
+  };
+
   const editStatusFunc = async () => {
     try {
       const response = await axios.put(`http://127.0.0.1:8080/query/${selectedQuery.id}`, {
@@ -140,6 +150,7 @@ export default function Home() {
           onClose={closeStatusModal}
           selectedQuery={selectedQuery}
           onSubmit={editStatusFunc}
+          deleteQuery={deleteQuery}
         />
 
       </div>

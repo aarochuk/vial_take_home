@@ -1,23 +1,30 @@
 // components/EditQueryModal.tsx
 "use client";
-import { Modal, Button } from '@mantine/core';
+import { Modal, Button, Tooltip, ActionIcon } from '@mantine/core';
 import styles from "./modals.module.css";
 import { TiTick } from 'react-icons/ti';
 import { FaCircle } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
+import axios from "axios";
 
 interface EditQueryModalProps {
   opened: boolean;
   onClose: () => void;
   selectedQuery: any;
   onSubmit: () => void;
+  deleteQuery: ()=> void;
 }
 
 export default function EditQueryModal({
   opened,
   onClose,
   selectedQuery,
-  onSubmit
+  onSubmit,
+  deleteQuery
 }: EditQueryModalProps) {
+
+  
+
   return (
     <Modal
       opened={opened}
@@ -38,7 +45,7 @@ export default function EditQueryModal({
           <div className={styles.info}>
             <p className={styles.info_title}>Query Status</p>
             <p className={styles.info_val}>
-              <FaCircle color={selectedQuery?.status === "OPEN" ? "red" : "green"}/>
+              <FaCircle color={selectedQuery?.status === "OPEN" ? "red" : "green"} />
               <span>{selectedQuery?.status}</span>
             </p>
           </div>
@@ -60,7 +67,22 @@ export default function EditQueryModal({
               </span>
             </Button> : <></>
           }
+          <Tooltip label="Delete Query" position="top" withArrow>
+            <ActionIcon variant="filled" color="blue" onClick={deleteQuery}>
+              <FaTrash />
+            </ActionIcon>
+          </Tooltip>
         </div>
+      </div>
+      <div>
+        {selectedQuery?.description ?
+          <div>
+            <p className={styles.info_title}>Description</p>
+            <p className={styles.desc}>
+              {selectedQuery?.description}
+            </p>
+          </div> : <></>
+        }
       </div>
 
     </Modal>
