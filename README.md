@@ -37,7 +37,7 @@ There is a simple RESTful API for queries made with node.js and prisma with the 
 - POST /query: This endpoint creates a new query
 - PUT /query/{id}: This endpoint updates the query which has an id of id
 - DELETE /query/{id}: This endpoint deletes the query which has an id of id <br/>
-- Note: API documentation was made with swagger and can be viewed at http://localhost:8080/documentation, please note the backend server needs to be running in order to view the documentation.
+- Note: API documentation was made with swagger and can be viewed at http://localhost:8080/documentation, please note the backend server needs to be running in order to view the documentation, you can start the server and populate the database with the seed data using the first 6 steps in the Running the Project Locally section.
 
 ### Database
 - There exists the **form data model** with the following fields:
@@ -56,7 +56,7 @@ There is a simple RESTful API for queries made with node.js and prisma with the 
     - `formDataId`: the relational foreign key id of the formData
 
 ### Testing
-There is a simple test that should test the API, these test cases require the server to be running in order to run the tests. If the server is running you can run the test with the following command
+There is a simple test that should test the API, these test cases require the server to be running in order to run the tests, you can start the server and populate the database with the seed data using the first 6 steps in the Running the Project Locally section. If the server is running you can run the test with the following command
 - `npm run test`
 
 Unfortunately I was unable to host the website online, nevertheless, thank you for the OA I was able to learn alot and it was fun.
