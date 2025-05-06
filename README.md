@@ -24,7 +24,7 @@ You can also run the front end first with the following commands
 - You should be able to access a local version of the website at http://localhost:3000
 Then you can start the backend with the following
 - `cd ../backend`
-- create a .env file by copying the .env.example file which was provided to start this project
+- create a .env file by copying the .env.example file which was provided to start this project<br/>
 Then run the following commands in order:
 - `docker-compose build`
 - `docker-compose up`
