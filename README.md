@@ -21,7 +21,7 @@ You can also run the front end first with the following commands
 - `cd frontend`
 - `npm i`
 - `npm run dev`
-- You should be able to access a local version of the website at http://localhost:3000
+- You should be able to access a local version of the website at http://localhost:3000<br/>
 Then you can start the backend with the following
 - `cd ../backend`
 - create a .env file by copying the .env.example file which was provided to start this project<br/>
