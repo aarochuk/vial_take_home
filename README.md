@@ -36,7 +36,7 @@ There is a simple RESTful API for queries made with node.js and prisma with the 
 - GET /form-data: This endpoint returns all the form data and related query data in the database
 - POST /query: This endpoint creates a new query
 - PUT /query/{id}: This endpoint updates the query which has an id of id
-- DELETE /query/{id}: This endpoint deletes the query which has an id of id
+- DELETE /query/{id}: This endpoint deletes the query which has an id of id <br/>
 API documentation was made with swagger and can be viewed at http://localhost:8080/documentation, please note the backend server needs to be running in order to view the documentation.
 
 ### Database
