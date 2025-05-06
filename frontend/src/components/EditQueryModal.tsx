@@ -1,4 +1,6 @@
 // components/EditQueryModal.tsx
+// Created to make styling modal easier
+
 "use client";
 import { Modal, Button, Tooltip, ActionIcon } from '@mantine/core';
 import styles from "./modals.module.css";
@@ -49,17 +51,23 @@ export default function EditQueryModal({
         close: styles.close
       }}
     >
+      {/**Background color dependent on the status of the query */}
       <div className={styles.modal_content}>
         <div className={styles.info_holder}>
           <div className={styles.info}>
             <p className={styles.info_title}>Query Status</p>
             <p className={styles.info_val}>
+              {/**Display the circle shown in sample image beside query status */}
               <FaCircle color={selectedQuery?.status === "OPEN" ? "red" : "green"} />
               <span>{selectedQuery?.status}</span>
             </p>
           </div>
           <div className={styles.info}>
             <p className={styles.info_title}>Created On</p>
+            {/**Do not display the time with the date, the time is also stored 
+             * in the database but only the date is shown so that it matches what
+             * appears in the sample image
+             */}
             <p className={styles.info_val}>{selectedQuery?.createdAt?.split('T')[0]}</p>
           </div>
           <div className={styles.info}>
@@ -68,6 +76,9 @@ export default function EditQueryModal({
           </div>
         </div>
         <div className={styles.resolve_holder}>
+          {/**Resolve button only displayed if the status is OPEN, because you cannot resolve 
+           * A query if it is already resolved
+           */}
           {selectedQuery?.status === "OPEN" ?
             <Button onClick={onSubmit}>
               <TiTick />

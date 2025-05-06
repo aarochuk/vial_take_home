@@ -6,16 +6,10 @@ async function setupSwagger(app: FastifyInstance) {
   await app.register(fastifySwagger, {
     openapi: {
       info: {
-        title: 'Form Data and Query API',
-        description: 'API for managing form data and queries',
+        title: 'Query Management System API',
+        description: 'API to get queries and form data for a Query Management System',
         version: '1.0.0',
       },
-      servers: [
-        {
-          url: 'http://localhost:8080',
-          description: 'Development server'
-        }
-      ],
       components: {
         schemas: {
           Query: {
@@ -66,11 +60,11 @@ async function setupSwagger(app: FastifyInstance) {
         '/form-data': {
           get: {
             tags: ['FormData'],
-            summary: 'Get all form data',
-            description: 'Retrieves all form data records with their associated queries',
+            summary: 'Gets all the form data',
+            description: 'Retrieves all form data records with their associated queries from the database',
             responses: {
               '200': {
-                description: 'Successfully retrieved form data',
+                description: 'Successfully retrieved all form data',
                 content: {
                   'application/json': {
                     schema: {
@@ -102,7 +96,7 @@ async function setupSwagger(app: FastifyInstance) {
                 }
               },
               '400': {
-                description: 'Failed to fetch form data',
+                description: 'Failed to fetch all form data',
                 content: {
                   'application/json': {
                     schema: {
@@ -118,7 +112,7 @@ async function setupSwagger(app: FastifyInstance) {
           post: {
             tags: ['Query'],
             summary: 'Create a new query',
-            description: 'Create a new query linked to form data',
+            description: 'Creates a new query which is associated with a form data',
             requestBody: {
               content: {
                 'application/json': {
@@ -127,7 +121,7 @@ async function setupSwagger(app: FastifyInstance) {
                     required: ['title', 'formDataId'],
                     properties: {
                       title: { type: 'string', description: 'Title of the query' },
-                      description: { type: 'string', description: 'Detailed description of the query' },
+                      description: { type: 'string', description: 'Detailed description of the query this is optional' },
                       formDataId: { type: 'string', description: 'ID of the form data to associate with this query' }
                     }
                   }
@@ -146,7 +140,7 @@ async function setupSwagger(app: FastifyInstance) {
                 }
               },
               '400': {
-                description: 'Bad request - failed to create query',
+                description: 'Failed to create query',
                 content: {
                   'application/json': {
                     schema: {
@@ -172,7 +166,7 @@ async function setupSwagger(app: FastifyInstance) {
           put: {
             tags: ['Query'],
             summary: 'Update a query',
-            description: 'Update an existing query by ID',
+            description: 'Update an existing query by given ID',
             parameters: [
               {
                 name: 'id',
@@ -181,7 +175,7 @@ async function setupSwagger(app: FastifyInstance) {
                 schema: {
                   type: 'string'
                 },
-                description: 'Query ID to update'
+                description: 'ID of query to update'
               }
             ],
             requestBody: {
@@ -190,8 +184,8 @@ async function setupSwagger(app: FastifyInstance) {
                   schema: {
                     type: 'object',
                     properties: {
-                      title: { type: 'string', description: 'New title for the query' },
-                      description: { type: 'string', description: 'New description for the query' },
+                      title: { type: 'string', description: 'Updated title of the query' },
+                      description: { type: 'string', description: 'Updated description of the query' },
                       status: { 
                         type: 'string', 
                         enum: ['OPEN', 'RESOLVED'], 
@@ -214,7 +208,7 @@ async function setupSwagger(app: FastifyInstance) {
                 }
               },
               '400': {
-                description: 'Bad request - failed to update query',
+                description: 'Failed to update query',
                 content: {
                   'application/json': {
                     schema: {
@@ -238,7 +232,7 @@ async function setupSwagger(app: FastifyInstance) {
           delete: {
             tags: ['Query'],
             summary: 'Delete a query',
-            description: 'Delete a query by ID',
+            description: 'Delete a query by given ID',
             parameters: [
               {
                 name: 'id',
@@ -247,7 +241,7 @@ async function setupSwagger(app: FastifyInstance) {
                 schema: {
                   type: 'string'
                 },
-                description: 'Query ID to delete'
+                description: 'ID of query to delete'
               }
             ],
             responses: {
@@ -255,7 +249,7 @@ async function setupSwagger(app: FastifyInstance) {
                 description: 'Query successfully deleted'
               },
               '400': {
-                description: 'Bad request - failed to delete query',
+                description: 'Failed to delete query',
                 content: {
                   'application/json': {
                     schema: {

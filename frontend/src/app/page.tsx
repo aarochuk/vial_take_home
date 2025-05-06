@@ -38,7 +38,7 @@ export default function Home() {
   const [editModalOpened, setEditModalOpened] = useState(false);
   const [selectedQuery, setSelectedQuery] = useState<Query | null>(null);
 
-  const newStatusModal = (formData: FormData) => {
+  const newQueryModal = (formData: FormData) => {
     setSelectedFD(formData);
     setAddModal(true);
   };
@@ -49,6 +49,7 @@ export default function Home() {
     setSelectedFD(null);
   };
 
+  // make request to API to create a new query
   const newQuery = async () => {
     try {
       await axios.post("http://127.0.0.1:8080/query", {
@@ -61,7 +62,7 @@ export default function Home() {
     closeAddModal();
   };
 
-  const editStatusModal = (query: Query | null | undefined) => {
+  const editQueryModal = (query: Query | null | undefined) => {
     if (query){
       setSelectedQuery(query);
     }
@@ -73,6 +74,7 @@ export default function Home() {
     setSelectedQuery(null);
   };
 
+  // make request to API to delete a query
   const deleteQuery = async () => {
     try {
       await axios.delete(`http://127.0.0.1:8080/query/${selectedQuery?.id}`);
@@ -83,6 +85,7 @@ export default function Home() {
     closeStatusModal();
   };
 
+  // make request to API to change the status of a query always from OPEN to RESOLVED
   const editStatusFunc = async () => {
     try {
       await axios.put(`http://127.0.0.1:8080/query/${selectedQuery?.id}`, {
@@ -95,6 +98,8 @@ export default function Home() {
     closeStatusModal();
   };
 
+  // make request to API to get all the form data, and also any associated query data,
+  // which is used to populate the table created below
   const populateTable = async () => {
     try {
       const response = await axios.get("http://127.0.0.1:8080/form-data");
@@ -104,6 +109,7 @@ export default function Home() {
     }
   };
 
+  // populate the table on any change, so that table data is the most current
   useEffect(() => {
     populateTable();
   }, []);
@@ -130,22 +136,23 @@ export default function Home() {
             {formData.map((data, index) => {
               return (
                 <tr className={`${data.query ? (data.query.status === "OPEN" ? styles.open : styles.resolved) : styles.tableRow}`} key={index}>
+                  {/** On hover background color depends on the status */}
                   <td>{data.question}</td>
                   <td>{data.answer}</td>
                   <td className={styles.center_td}>{data.query ? (
                     <Tooltip label="View Query" position="top" withArrow>
                       {data.query.status === "OPEN" ? 
-                        <ActionIcon variant="filled" color="red" onClick={() => editStatusModal(data.query)}>
+                        <ActionIcon variant="filled" color="red" onClick={() => editQueryModal(data.query)}>
                           <FaQuestion />
                         </ActionIcon> : 
-                        <ActionIcon variant="filled" color="green" onClick={() => editStatusModal(data.query)}>
+                        <ActionIcon variant="filled" color="green" onClick={() => editQueryModal(data.query)}>
                           <TiTick />
                         </ActionIcon>
                         }
                     </Tooltip>
                   ) : (
                     <Tooltip label="Add Query" position="top" withArrow>
-                      <ActionIcon variant="filled" color="blue" onClick={() => newStatusModal(data)}>
+                      <ActionIcon variant="filled" color="blue" onClick={() => newQueryModal(data)}>
                         <FaPlus />
                       </ActionIcon>
                     </Tooltip>
@@ -155,6 +162,7 @@ export default function Home() {
             })}
           </tbody>
         </table>
+        {/**Add query modal opened when creating a new query */}
         <AddQueryModal
           opened={addModal}
           onClose={closeAddModal}
@@ -164,7 +172,7 @@ export default function Home() {
           onSubmit={newQuery}
         />
 
-
+        {/**Edit query modal opened when editing a query */}
         <EditQueryModal
           opened={editModalOpened}
           onClose={closeStatusModal}

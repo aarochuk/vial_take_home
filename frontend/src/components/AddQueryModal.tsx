@@ -1,4 +1,6 @@
 // components/AddQueryModal.tsx
+// Created to make styling modal easier
+
 "use client";
 import { Modal, Textarea, Button } from '@mantine/core';
 import styles from "./modals.module.css";
@@ -52,6 +54,7 @@ export default function AddQueryModal({
         close: styles.close
       }}
     >
+      {/**Text area to enter the description of the query */}
       <Textarea
         placeholder="Add a query description"
         value={queryDesc}
@@ -62,6 +65,7 @@ export default function AddQueryModal({
         autosize
         maxRows={6}
       />
+      {/** Create new query on click of button*/}
       <Button onClick={onSubmit} className={styles.addCreate}>
         Create
       </Button>

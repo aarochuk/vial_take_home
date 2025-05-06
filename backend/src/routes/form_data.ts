@@ -17,6 +17,8 @@ async function formDataRoutes(app: FastifyInstance) {
       log.debug('get form data')
       try {
         const formData = await prisma.formData.findMany({
+          // Also return the query data with the formData 
+          // if the formData has query data associated with it
           include: {
             query: true
           }

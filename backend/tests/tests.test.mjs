@@ -1,3 +1,4 @@
+// Simple API test file
 import { describe, it, before, after } from 'node:test'
 import assert from 'node:assert'
 import fetch from 'node-fetch'
@@ -11,6 +12,9 @@ let testFormDataId;
 let createdQueryId;
 const fakeQueryId = '0'*32;
 
+// Runs before all the test cases and creates
+// test data in the formData table we will
+// use for simple tests
 before(async () => {
   console.log('Setting up test data before all tests')
   const testFormData = await client.formData.create({
@@ -23,6 +27,9 @@ before(async () => {
   console.log(`Created test form data with ID: ${testFormDataId}`)
 })
 
+// Runs after all test cases and deletes the
+// test data that we created in the formData table
+// and any queries it might have
 after(async () => {
   console.log('Cleaning up test data after all tests')
   if (createdQueryId) {
@@ -54,6 +61,8 @@ after(async () => {
 
 describe('API Tests', () => {
 
+  // Test 1:
+  // Test that we can successfully create a query
   it('1. POST /query creates a new query successfully', async () => {
     const queryData = {
       title: 'Test Query',
@@ -89,6 +98,8 @@ describe('API Tests', () => {
     assert.ok(createdQueryId, 'Failed to get ID of created query')
   })
 
+  // Test 2:
+  // Test that if a query exists on a form data we cannot create another
   it('2. This test is for POST /query, fails to create new query since form data already has query', async () => {
     const queryData = {
       title: 'Test Query',
@@ -109,6 +120,8 @@ describe('API Tests', () => {
     )
   })
 
+  // Test 3:
+  // Test we can edit a query
   it('3. PUT /query/:id updates a query status successfully', async () => {
     assert.ok(createdQueryId, 'No query ID available for update test')
     const updateData = {
@@ -146,6 +159,8 @@ describe('API Tests', () => {
     )
   })
 
+  // Test 4:
+  // Test we cannot edit a query that does not exist
   it('4. Test is for PUT /query/:id fails to updates a query that doesnt exist', async () => {
     assert.ok(createdQueryId, 'No query ID available for update test')
     const updateData = {
@@ -167,6 +182,8 @@ describe('API Tests', () => {
     )
   })
 
+  // Test 5:
+  // Test we can delete a query
   it('5. DELETE /query/:id deletes a query successfully', async () => {
     assert.ok(createdQueryId, 'No query ID available for delete test')
     const response = await fetch(`${API_BASE_URL}/query/${createdQueryId}`, {
@@ -180,6 +197,8 @@ describe('API Tests', () => {
     createdQueryId = null;
   })
 
+  // Test 6:
+  // Test we can successfully use the form data get request
   it('6. GET /form-data returns form data with status 200', async () => {
     const response = await fetch(`${API_BASE_URL}/form-data`);
     assert.strictEqual(response.status, 200);

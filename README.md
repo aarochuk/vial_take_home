@@ -30,7 +30,6 @@ Adding a description is optional, if you create a query it will start as OPEN, q
 A resolved query will look like this,
 ![resolved.png](./assets/resolved.png)
 You can delete a query by clicking the trash button in the view query modal.
-You can view the website online via this link: link to live website
 
 ### Backend (API)
 There is a simple RESTful API for queries made with node.js and prisma with the following endpoints
@@ -38,7 +37,7 @@ There is a simple RESTful API for queries made with node.js and prisma with the 
 - POST /query: This endpoint creates a new query
 - PUT /query/{id}: This endpoint updates the query which has an id of id
 - DELETE /query/{id}: This endpoint deletes the query which has an id of id
-Further details and API documentation can be found here: link to swagger
+API documentation was made with swagger and can be viewed at http://localhost:8080/documentation, please note the backend server needs to be running in order to view the documentation.
 
 ### Database
 - There exists the **form data model** with the following fields:
@@ -60,4 +59,4 @@ Further details and API documentation can be found here: link to swagger
 There is a simple test that should test the API, these test cases require the server to be running in order to run the tests. If the server is running you can run the test with the following command
 - `npm run test`
 
-Thank you for the OA it was fun.
+Unfortunately I was unable to host the website online, nevertheless, thank you for the OA I was able to learn alot and it was fun.

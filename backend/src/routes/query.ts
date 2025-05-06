@@ -7,6 +7,8 @@ import { ApiError } from '../errors';
 async function queryRoutes(app: FastifyInstance) {
   app.setReplySerializer(serializer);
   const log = app.log.child({ component: 'queryRoutes' });
+
+  // Post Request to create new queries
   app.post<{
     Body: CreateQuery;
   }>('', {
@@ -25,6 +27,7 @@ async function queryRoutes(app: FastifyInstance) {
             title,
             description: description,
             status: "OPEN",
+            // Queries start with a status of OPEN
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             formDataId
@@ -38,6 +41,7 @@ async function queryRoutes(app: FastifyInstance) {
     },
   });
 
+  // Put Request to edit Queries based on the provided id
   app.put<{
     Params: { id: string };
     Body: UpdateQuery;
@@ -56,6 +60,11 @@ async function queryRoutes(app: FastifyInstance) {
         const updatedQuery = await prisma.query.update({
           where: { id },
           data: {
+            // You can edit the title, description and status manually
+            // updatedAt cannot be modified by the user but is based on 
+            // when the post or put requests are called, in addition, you
+            // cannot change the formData a query is associated with or
+            // when it was created
             title: title !== undefined ? title : existingQuery.title,
             description: description !== undefined ? description : existingQuery.description,
             status: status !== undefined ? status : existingQuery.status,
@@ -73,6 +82,7 @@ async function queryRoutes(app: FastifyInstance) {
     },
   });
 
+  // Delete a query based on its id
   app.delete<{
     Params: { id: string };
   }>('/:id', {
