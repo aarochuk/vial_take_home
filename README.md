@@ -4,19 +4,33 @@ Hello, my name is Andrew and this is my solution to the vial take home assignmen
 
 ## Running the project locally
 To run this project locally follow the following steps;
-- `cd /backend`
+- `cd backend`
 - create a .env file by copying the .env.example file which was provided to start this project
 Then run the following commands in order:
 - `docker-compose build`
 - `docker-compose up`
 - `npm run migrate`
 - `npm run seed`
-- You should be able to access the server locally at http://localhost:8080
+- You should be able to access the server locally at http://localhost:8080<br/>
 At this point the backend server should be running now we can launch the frontend website by running the following commands in order:
 - `cd ../frontend`
 - `npm i`
 - `npm run dev`
+- You should be able to access a local version of the website at http://localhost:3000<br/>
+You can also run the front end first with the following commands
+- `cd frontend`
+- `npm i`
+- `npm run dev`
 - You should be able to access a local version of the website at http://localhost:3000
+Then you can start the backend with the following
+- `cd ../backend`
+- create a .env file by copying the .env.example file which was provided to start this project
+Then run the following commands in order:
+- `docker-compose build`
+- `docker-compose up`
+- `npm run migrate`
+- `npm run seed`
+- You should be able to access the server locally at http://localhost:8080<br/>
 
 ## Features
 ### Frontend
