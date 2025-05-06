@@ -1,5 +1,3 @@
-import { IFormData } from './formData.interface';
-
 export interface IQuery {
   id: string;
   title: string;
@@ -17,5 +15,7 @@ export interface CreateQuery{
 }
 
 export interface UpdateQuery {
-  status: string;
+  title?: string;
+  description?: string;
+  status?: string;
 }

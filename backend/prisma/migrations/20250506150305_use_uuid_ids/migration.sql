@@ -1,5 +1,11 @@
--- AlterTable
-ALTER TABLE "form_data" ADD CONSTRAINT "form_data_pkey" PRIMARY KEY ("id");
+-- CreateTable
+CREATE TABLE "form_data" (
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "question" TEXT NOT NULL,
+    "answer" TEXT NOT NULL,
+
+    CONSTRAINT "form_data_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "query" (

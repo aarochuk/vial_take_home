@@ -30,8 +30,7 @@ async function queryRoutes(app: FastifyInstance) {
             formDataId
           }
         })
-        console.log("hello worlds")
-        reply.status(201);
+        reply.status(201).send(query);
       } catch (err: any) {
         log.error({ err }, err.message);
         throw new ApiError('Failed to create query', 400);
@@ -46,7 +45,7 @@ async function queryRoutes(app: FastifyInstance) {
     async handler(req, reply) {
       log.debug('update query');
       const { id } = req.params;
-      const { status } = req.body;
+      const { status, title, description } = req.body;
       try {
         const existingQuery = await prisma.query.findUnique({
           where: { id }
@@ -57,13 +56,13 @@ async function queryRoutes(app: FastifyInstance) {
         const updatedQuery = await prisma.query.update({
           where: { id },
           data: {
-            title: existingQuery.title,
-            description: existingQuery.description,
-            status: status ?? existingQuery.status,
+            title: title !== undefined ? title : existingQuery.title,
+            description: description !== undefined ? description : existingQuery.description,
+            status: status !== undefined ? status : existingQuery.status,
             updatedAt: new Date().toISOString()
           }
         });
-        reply.status(200);
+        reply.status(200).send(updatedQuery);
       } catch (err: any) {
         log.error({ err }, err.message);
         if (err instanceof ApiError) {

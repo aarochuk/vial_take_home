@@ -31,6 +31,7 @@
     "dev": "nodemon src/index.ts",
     "migrate": "docker exec -it vial-backend-api npx prisma migrate deploy",
     "seed": "docker exec -it vial-backend-api npx prisma db seed",
+    "test": "docker exec -it vial-backend-api node --test tests/tests.test.mjs",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix"
   },
