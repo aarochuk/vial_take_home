@@ -1,8 +1,8 @@
 "use client";
 import styles from "./page.module.css";
 import axios from "axios";
-import { useState, useEffect, SetStateAction } from "react";
-import { ActionIcon, Badge, Tooltip } from '@mantine/core';
+import { useState, useEffect } from "react";
+import { ActionIcon, Tooltip } from '@mantine/core';
 import { FaPlus } from 'react-icons/fa';
 import { TiTick } from "react-icons/ti";
 import { FaQuestion } from "react-icons/fa";
@@ -10,17 +10,35 @@ import { FaQuestion } from "react-icons/fa";
 import AddQueryModal from '../components/AddQueryModal';
 import EditQueryModal from '../components/EditQueryModal';
 
+interface Query {
+  id: string;
+  title: string;
+  description?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  formDataId: string;
+}
+
+interface FormData {
+  id: string;
+  question: string;
+  answer: string;
+  query?: Query | null; 
+}
+
+
 export default function Home() {
-  const [formData, addFormData] = useState<any[]>([]);
+  const [formData, addFormData] = useState<FormData[]>([]);
 
   const [addModal, setAddModal] = useState(false);
   const [queryDesc, setQueryDesc] = useState<string>("");
-  const [selectedFD, setSelectedFD] = useState<any>(null);
+  const [selectedFD, setSelectedFD] = useState<FormData | null>(null);
 
   const [editModalOpened, setEditModalOpened] = useState(false);
-  const [selectedQuery, setSelectedQuery] = useState<any>(null);
+  const [selectedQuery, setSelectedQuery] = useState<Query | null>(null);
 
-  const newStatusModal = (formData: any) => {
+  const newStatusModal = (formData: FormData) => {
     setSelectedFD(formData);
     setAddModal(true);
   };
@@ -33,18 +51,20 @@ export default function Home() {
 
   const newQuery = async () => {
     try {
-      const response = await axios.post("http://127.0.0.1:8080/query", {
-        title: selectedFD.question, description: queryDesc, formDataId: selectedFD.id
+      await axios.post("http://127.0.0.1:8080/query", {
+        title: selectedFD?.question, description: queryDesc, formDataId: selectedFD?.id
       });
       await populateTable();
     } catch (error) {
-      console.log("Error Occured");
+      console.log(`Error Occured: ${error}`);
     }
     closeAddModal();
   };
 
-  const editStatusModal = (query: any) => {
-    setSelectedQuery(query);
+  const editStatusModal = (query: Query | null | undefined) => {
+    if (query){
+      setSelectedQuery(query);
+    }
     setEditModalOpened(true);
   };
 
@@ -55,22 +75,22 @@ export default function Home() {
 
   const deleteQuery = async () => {
     try {
-      const response = await axios.delete(`http://127.0.0.1:8080/query/${selectedQuery.id}`);
+      await axios.delete(`http://127.0.0.1:8080/query/${selectedQuery?.id}`);
       await populateTable();
     } catch (error) {
-      console.log("Error Occured");
+      console.log(`Error Occured ${error}`);
     }
     closeStatusModal();
   };
 
   const editStatusFunc = async () => {
     try {
-      const response = await axios.put(`http://127.0.0.1:8080/query/${selectedQuery.id}`, {
+      await axios.put(`http://127.0.0.1:8080/query/${selectedQuery?.id}`, {
         status: "RESOLVED"
       });
       await populateTable();
     } catch (error) {
-      console.log("Error Occured");
+      console.log(`Error Occured: ${error}`);
     }
     closeStatusModal();
   };
@@ -80,7 +100,7 @@ export default function Home() {
       const response = await axios.get("http://127.0.0.1:8080/form-data");
       addFormData([...response.data.data.formData]);
     } catch (error) {
-      console.log("Error Occured");
+      console.log(`Error Occured: ${error}`);
     }
   };
 
@@ -109,7 +129,7 @@ export default function Home() {
             </tr>
             {formData.map((data, index) => {
               return (
-                <tr className={`${data.query ? (data.query.status === "OPEN" ? styles.open : styles.resolved) : styles.tableRow}`} key={data.id}>
+                <tr className={`${data.query ? (data.query.status === "OPEN" ? styles.open : styles.resolved) : styles.tableRow}`} key={index}>
                   <td>{data.question}</td>
                   <td>{data.answer}</td>
                   <td className={styles.center_td}>{data.query ? (

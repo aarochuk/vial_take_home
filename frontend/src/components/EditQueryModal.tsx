@@ -5,12 +5,21 @@ import styles from "./modals.module.css";
 import { TiTick } from 'react-icons/ti';
 import { FaCircle } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa";
-import axios from "axios";
+
+interface Query {
+  id: string;
+  title: string;
+  description?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  formDataId: string;
+}
 
 interface EditQueryModalProps {
   opened: boolean;
   onClose: () => void;
-  selectedQuery: any;
+  selectedQuery: Query | null;
   onSubmit: () => void;
   deleteQuery: ()=> void;
 }

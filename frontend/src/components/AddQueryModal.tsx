@@ -3,10 +3,27 @@
 import { Modal, Textarea, Button } from '@mantine/core';
 import styles from "./modals.module.css";
 
+interface Query {
+  id: string;
+  title: string;
+  description?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  formDataId: string;
+}
+
+interface FormData {
+  id: string;
+  question: string;
+  answer: string;
+  query?: Query | null; 
+}
+
 interface AddQueryModalProps {
   opened: boolean;
   onClose: () => void;
-  selectedFD: any;
+  selectedFD: FormData | null;
   queryDesc: string;
   setQueryDesc: (value: string) => void;
   onSubmit: () => void;
