@@ -1,6 +1,6 @@
 # Solution to Vial Take Home Assignment
 
-Hello, my name is Andrew and this is my solution to the vial take home assignment, in this readme I will describe how to run this project locally, how to run the tests and also provide the link to the API documentation as well as the link to the live hosted version of the project.
+Hello, my name is Andrew and this is my solution to the vial take home assignment, in this readme I will describe how to run this project locally, how to run the tests and also provide the link to the API documentation.
 
 ## Running the project locally
 To run this project locally follow the following steps;
