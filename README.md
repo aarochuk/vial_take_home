@@ -16,7 +16,7 @@ At this point the backend server should be running now we can launch the fronten
 - `cd ../frontend`
 - `npm i`
 - `npm run dev`
-- You should be able to access a local version of the website at http://localhost:3000<br/>
+- You should be able to access a local version of the website at http://localhost:3000<br/><br/>
 You can also run the front end first with the following commands
 - `cd frontend`
 - `npm i`
