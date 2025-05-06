@@ -18,13 +18,13 @@ async function formDataRoutes(app: FastifyInstance) {
       try {
         const formData = await prisma.formData.findMany({
           include: {
-            query: true  // This will include the related query data
+            query: true
           }
         })
         reply.send({
           total: formData.length,
           formData,
-        })
+        }).status(200);
       } catch (err: any) {
         log.error({ err }, err.message)
         throw new ApiError('failed to fetch form data', 400)

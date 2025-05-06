@@ -13,12 +13,9 @@ export interface IQuery {
 export interface CreateQuery{
   title: string;
   description: string;
-  status: string;
   formDataId: string;
 }
 
 export interface UpdateQuery {
-  title?: string;
-  description?: string | null;
-  status?: string;
+  status: string;
 }

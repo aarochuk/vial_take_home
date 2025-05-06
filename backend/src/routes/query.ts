@@ -12,7 +12,7 @@ async function queryRoutes(app: FastifyInstance) {
   }>('', {
     async handler(req, reply) {
       log.debug('create query');
-      const { title, description, status, formDataId } = req.body;
+      const { title, description, formDataId } = req.body;
       try {
         const formData = await prisma.formData.findUnique({
           where: { id: formDataId }
@@ -24,7 +24,7 @@ async function queryRoutes(app: FastifyInstance) {
           data: {
             title,
             description: description,
-            status,
+            status: "OPEN",
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             formDataId
@@ -46,7 +46,7 @@ async function queryRoutes(app: FastifyInstance) {
     async handler(req, reply) {
       log.debug('update query');
       const { id } = req.params;
-      const { title, description, status } = req.body;
+      const { status } = req.body;
       try {
         const existingQuery = await prisma.query.findUnique({
           where: { id }
@@ -57,8 +57,8 @@ async function queryRoutes(app: FastifyInstance) {
         const updatedQuery = await prisma.query.update({
           where: { id },
           data: {
-            title: title ?? existingQuery.title,
-            description: description !== undefined ? description : existingQuery.description,
+            title: existingQuery.title,
+            description: existingQuery.description,
             status: status ?? existingQuery.status,
             updatedAt: new Date().toISOString()
           }

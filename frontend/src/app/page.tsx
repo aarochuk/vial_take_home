@@ -34,7 +34,7 @@ export default function Home() {
   const newQuery = async () => {
     try {
       const response = await axios.post("http://127.0.0.1:8080/query", {
-        title: selectedFD.question, description: queryDesc, status: "OPEN", formDataId: selectedFD.id
+        title: selectedFD.question, description: queryDesc, formDataId: selectedFD.id
       });
       await populateTable();
     } catch (error) {
